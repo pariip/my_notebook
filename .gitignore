@@ -1,0 +1,7 @@
+*.pem
+.idea
+venv
+media
+/*/migrations
+__pycache__
+/*/__pycache__
