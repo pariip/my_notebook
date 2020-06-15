@@ -42,3 +42,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.username
 
 
+class JWTToken(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    token = models.CharField(max_length=256)
+    createdAt = models.DateTimeField(default=timezone.now)
+    updatedAt = models.DateTimeField(default=timezone.now)
+    objects = TokenManager()
