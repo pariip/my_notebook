@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 
 from notes.models import Note
@@ -16,10 +17,19 @@ class NoteSerializers(serializers.ModelSerializer):
         extra_kwargs = {
             'user': {'read_only': True},
         }
-
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         return Note.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        print(validated_data)
+        instance.user = self.context['request'].user
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        instance.public_note = validated_data.get('public_note', instance.public_note)
+        instance.updatedAt = timezone.now()
+        instance.save()
+        return instance
 
     def to_representation(self, obj):
         data = super(NoteSerializers, self).to_representation(obj)

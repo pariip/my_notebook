@@ -24,3 +24,26 @@ class SignupSerializer(serializers.Serializer):
     class Meta:
         model = CustomUser
         feilds = ("__all__")
+
+
+class UserSerializer(serializers.ModelSerializer):
+    fields = "__all__"
+    extra_kwargs = {
+        'user': {'read_only': True},
+    }
+
+    class Meta:
+        model = CustomUser
+        fields = "__all__"
+        extra_kwargs = {
+            'user': {'read_only': True},
+        }
+
+    def to_representation(self, instance):
+        data = {}
+        data['id'] = instance.id
+        data['username'] = instance.username
+        # data['email'] = ''
+        # if data['email'] != '':
+        data['email'] = instance.email
+        return data
